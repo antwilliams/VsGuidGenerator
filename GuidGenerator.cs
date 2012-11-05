@@ -7,14 +7,14 @@ using System.Resources;
 using System.Reflection;
 using System.Globalization;
 
-namespace VsGuidGenerator
+namespace Wct.Utilities.Extensions
 {
 	/// <summary>The object for implementing an Add-in.</summary>
 	/// <seealso class='IDTExtensibility2' />
-	public class Connect : IDTExtensibility2, IDTCommandTarget
+	public class GuidGenerator : IDTExtensibility2, IDTCommandTarget
 	{
 		/// <summary>Implements the constructor for the Add-in object. Place your initialization code within this method.</summary>
-		public Connect()
+        public GuidGenerator()
 		{
 		}
 
@@ -46,7 +46,7 @@ namespace VsGuidGenerator
 				try
 				{
 					//Add a command to the Commands collection:
-					Command command = commands.AddNamedCommand2(_addInInstance, "VsGuidGenerator", "VsGuidGenerator", "Executes the command for VsGuidGenerator", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported+(int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStylePictAndText, vsCommandControlType.vsCommandControlTypeButton);
+					Command command = commands.AddNamedCommand2(_addInInstance, "GuidGenerator", "Insert GUID", "Executes the command for VsGuidGenerator", true, 59, ref contextGUIDS, (int)vsCommandStatus.vsCommandStatusSupported+(int)vsCommandStatus.vsCommandStatusEnabled, (int)vsCommandStyle.vsCommandStyleText, vsCommandControlType.vsCommandControlTypeButton);
 
 					//Add a control for the command to the tools menu:
 					if((command != null) && (toolsPopup != null))
@@ -102,7 +102,7 @@ namespace VsGuidGenerator
 		{
 			if(neededText == vsCommandStatusTextWanted.vsCommandStatusTextWantedNone)
 			{
-				if(commandName == "VsGuidGenerator.Connect.VsGuidGenerator")
+                if (commandName == "Wct.Utilities.Extensions.GuidGenerator.GuidGenerator")
 				{
 					status = (vsCommandStatus)vsCommandStatus.vsCommandStatusSupported|vsCommandStatus.vsCommandStatusEnabled;
 					return;
@@ -122,7 +122,7 @@ namespace VsGuidGenerator
 			handled = false;
 			if(executeOption == vsCommandExecOption.vsCommandExecOptionDoDefault)
 			{
-				if(commandName == "VsGuidGenerator.Connect.VsGuidGenerator")
+                if (commandName == "Wct.Utilities.Extensions.GuidGenerator.GuidGenerator")
 				{
                     if (_applicationObject.ActiveDocument != null)
                     {

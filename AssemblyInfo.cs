@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("GUID Generator")]
+[assembly: AssemblyDescription("Insert GUIDs in to the VS text editor window")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Warwick Control Technologies")]
+[assembly: AssemblyProduct("GUID Generator")]
+[assembly: AssemblyCopyright("Copyright Warwick Control Technologies (c) 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -54,7 +54,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Connect.cs">
+    <Compile Include="GuidGenerator.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -115,10 +115,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\Users\antho_000\Documents\Visual Studio 2012\Addins\VsGuidGenerator - For Testing.AddIn">
-      <Link>VsGuidGenerator - For Testing.AddIn</Link>
+    <Content Include="VsGuidGenerator.AddIn">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="VsGuidGenerator.AddIn" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

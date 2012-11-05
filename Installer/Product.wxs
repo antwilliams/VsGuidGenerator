@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="*" Name="Visual Studio GUID Insert Add-In" Language="1033" Version="1.0.0.0" Manufacturer="Warwick Control Technologies" UpgradeCode="ee68b972-45bf-43f0-828c-05018364f210">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perUser" Platform="x86"  />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="Installer" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <Property Id="VS2012INSTALLATIONFOLDER" Secure="yes">
+      <RegistrySearch Id="VS2012InstallationFolderRegistrySearchId" Type="raw"
+                      Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\11.0" Name="InstallDir"></RegistrySearch>
+    </Property>
+
+    <!-- Launch condition: check that some Visual Studio version is present when the installing.
+           The OR'ed Installed variable ensures that the condition is always true when uninstalling, because we don't
+           need to check that Visual Studio is present when uninstalling.
+      -->
+    <Condition Message="This add-in requires Visual Studio 2012.">
+      Installed OR VS2012INSTALLATIONFOLDER
+    </Condition>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="AppDataFolder">
+        <Directory Id="Wct" Name="[Manufacturer]">
+        <Directory Id="INSTALLFOLDER" Name="VsGuidInsert" />
+        </Directory>
+        <Directory Id="MicrosoftDirId" Name="Microsoft">
+
+          <Directory Id="VisualStudioDirId" Name="VisualStudio">
+            <Directory Id="Dir100Id" Name="10.0">
+
+              <Directory Id="Dir100AddInsId" Name="AddIns">
+
+                <Component Id="VS2010AddInFileComponentId" Guid="$(var.VS2010_ADDIN_FILE_COMPONENT_GUID)">
+
+                  <!-- Copy the .AddIn file to the folder -->
+                  <File Id="VS2012AddInFileId" Name="VsGuidGenerator.AddIn" Vital="yes" DiskId="1"
+                        Source="$(var.ADDIN_XML_FILE_NAME)" />
+
+                  <!-- Modify the Assembly XML element inside the .AddIn file whose Id is VS2010AddInFileId
+                                to set value of the file whose Id is VS2010DllFileId -->
+                  <util:XmlFile Id="VS2012SetAssemblyElement" Action="setValue" File="[#VS2012AddInFileId]"
+                                ElementPath="/Extensibility/Addin/Assembly" Value="[#VS2012DllFileId]" Sequence="1" />
+
+ 
+                  <!-- This registry entry used as KeyPath is required to avoid the following warnings:
+                                ICE38: Component <x> installs to user profile. It must use a registry key under HKCU as its KeyPath not a file.
+                           -->
+                  <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\VS2012AddInFile" Name="Installed"
+                                 Type="integer" Value="1" KeyPath="yes"/>
+
+                </Component>
+
+              </Directory>
+            </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+
+      </Directory>
+    </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="VS2012DllFileComponentId" Guid="13e440b7-0141-4a2b-9e47-a547d2e01639">
+
+        <File Id="VS2012DllFileId" Name="VsGuidGenerator.dll" Vital="yes" DiskId="1" Source="VsGuidGenerator.dll" />
+
+        <!-- This registry entry used as KeyPath is required to avoid the following warnings:
+                  ICE38: Component <x> installs to user profile. It must use a registry key under HKCU as its KeyPath not a file.
+                  -->
+        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]\VS2012DllFile" Name="Installed" Type="integer"
+                       Value="1" KeyPath="yes"/>
+
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
